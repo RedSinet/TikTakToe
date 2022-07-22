@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <table border="1" width="100%" cellpadding="100">
+      <tr>
+        <th id="b1" onclick="game(1)"></th>
+        <th id="b2" onclick="game(2)"></th>
+        <th id="b3" onclick="game(3)"></th>
+      </tr>
+      <tr>
+        <th id="b4" onclick="game(4)"></th>
+        <th id="b5" onclick="game(5)"></th>
+        <th id="b6" onclick="game(6)"></th>
+      </tr>
+      <tr>
+        <th id="b7" onclick="game(7)"></th>
+        <th id="b8" onclick="game(8)"></th>
+        <th id="b9" onclick="game(9)"></th>
+      </tr>
+    </table>
+    <script>
+        let count = 0;
+        let ths = [];
+        for (let i = 1; i <= 9; i++) {
+            ths[i] = document.querySelector('#b' + i);
+        }
+
+
+        function game (x){
+            if (ths[x].textContent !== '') {
+                return;
+            }
+            
+            ths[x].textContent = "X";
+
+            if (count === 4){
+                alert("Ничья")
+                return;
+            }
+            
+            DestroyHuman();
+            count = count + 1;
+
+            
+            if (checkWin(1,2,3,'X') ||
+                checkWin(4,5,6,'X') ||
+                checkWin(7,8,9,'X') ||
+                checkWin(1,5,9,'X') ||
+                checkWin(3,5,7,'X') ||
+                checkWin(1,4,7,'X') ||
+                checkWin(2,5,8,'X') ||
+                checkWin(3,6,9,'X'))
+                {
+                    alert("Победа Х");
+                    for (let i = 1; i <= 9; i++){
+                        ths[i].textContent = '';
+                        count = 0;
+                    }
+                }
+             else if (
+                checkWin(1,2,3,'O') ||
+                checkWin(4,5,6,'O') ||
+                checkWin(7,8,9,'O') ||
+                checkWin(1,5,9,'O') ||
+                checkWin(3,5,7,'O') ||
+                checkWin(1,4,7,'O') ||
+                checkWin(2,5,8,'O') ||
+                checkWin(3,6,9,'O'))
+                {
+                    alert("Победа O");
+                    for (let i = 1; i <= 9; i++){
+                        ths[i].textContent = '';
+                        count = 0;
+                    }
+                }
+
+        }
+
+        function checkHuman(a1,a2,a3){
+            let z = ['O', 'X'];
+            for (let i=0; i< z.length; i++) {
+                if (ths[a1].textContent === z[i] && ths[a2].textContent === z[i] && ths[a3].textContent === ""){
+                    ths[a3].textContent = "O";
+                    return true;
+                } else if (ths[a1].textContent === "" && ths[a2].textContent === z[i] && ths[a3].textContent === z[i]){
+                    ths[a1].textContent = "O";
+                    return true;
+                } else if (ths[a1].textContent === z[i] && ths[a2].textContent ==="" && ths[a3].textContent === z[i]){
+                    ths[a2].textContent = "O";
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        function DestroyHuman() {
+            let qwe = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [1, 4, 7],
+                [2, 5, 8],
+                [3, 6, 9],
+                [1, 5, 9],
+                [3, 5, 7],
+            ];
+            let success = false;
+            for(let i = 0; i< qwe.length; i++) {
+                if (checkHuman(qwe[i][0],qwe[i][1],qwe[i][2])) {
+                    success = true;
+                    break;
+                }
+            }
+        
+            while (true && success === false){
+                let r = randomInteger(1, 9);
+                if (ths[r].textContent === '') {
+                    ths[r].textContent = "O";
+                    break;
+                }
+            }
+        }
+
+
+        function randomInteger(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function checkWin(a1, a2, a3, z) {
+            return ths[a1].textContent === z && ths[a2].textContent === z && ths[a3].textContent === z;
+        }
+        
+    </script>
+  </body>
+</html>
